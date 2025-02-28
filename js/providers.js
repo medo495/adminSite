@@ -48,8 +48,8 @@ function fetchProviders() {
                 <td>${provider.gender}</td>
                 <td>${provider.phone}</td>
                 <td>${provider.address}</td>
-                <td>${provider.services}</td>
-                <td><span class="badge ${provider.availability ? 'bg-success' : 'bg-danger'}">${provider.availability ? 'Available' : 'Unavailable'}</span></td>
+                <td>${provider.service}</td>
+                <td><span class="badge ${provider.is_disponible ? 'bg-success' : 'bg-danger'}">${provider.is_disponible ? 'Available' : 'Unavailable'}</span></td>
                 <td>${provider.rating_avg} ⭐</td>
                 <td>
                     <button class="btn btn-warning btn-sm" onclick="editProvider(${provider.id})"><i class="bi bi-pencil"></i></button>
@@ -72,7 +72,7 @@ function handleAddProvider(event) {
         gender: document.getElementById("providerGender").value,
         phone: document.getElementById("providerPhone").value,
         address: document.getElementById("providerAddress").value,
-        services: document.getElementById("providerServices").value,
+        service: document.getElementById("providerServices").value,
         is_disponible: document.getElementById("providerAvailability").value === "Available"
     };
 
@@ -118,7 +118,7 @@ function loadProviderData(id) {
     console.log("Loading provider data for ID:", id); // Debug log
     const accessToken = localStorage.getItem('access_token');
     
-    fetch(`http://127.0.0.1:8000/providers/?id=${id}`, {
+    fetch(`http://127.0.0.1:8000/provider/?id=${id}`, {
         headers: {
             "Authorization": `Bearer ${accessToken}`
         }
@@ -137,7 +137,7 @@ function loadProviderData(id) {
         document.getElementById("providerGender").value = providerData.gender;
         document.getElementById("providerPhone").value = providerData.phone;
         document.getElementById("providerAddress").value = providerData.address || '';
-        document.getElementById("providerServices").value = providerData.services;
+        document.getElementById("providerServices").value = providerData.service;
         document.getElementById("providerAvailability").value = providerData.is_disponible ? "Available" : "Unavailable";
     })
     .catch(error => console.error("Error loading provider data:", error));
@@ -157,7 +157,7 @@ function handleEditProvider(event) {
         gender: document.getElementById("providerGender").value,
         phone: document.getElementById("providerPhone").value,
         address: document.getElementById("providerAddress").value,
-        services: document.getElementById("providerServices").value,
+        service: document.getElementById("providerServices").value,
         is_disponible: document.getElementById("providerAvailability").value === "Available"
     };
 
@@ -262,5 +262,74 @@ if (window.location.pathname.includes('edit_provider.html')) {
         if (id) {
             loadProviderData(id);
         }
+    });
+}
+// Recherche d'un prestataire
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.location.pathname.includes('providers.html')) {
+        fetchProviders(); // Charger la liste initiale
+
+        // Récupération du bouton de recherche et ajout de l'événement "click"
+        const searchButton = document.getElementById("searchButton");
+        if (searchButton) {
+            searchButton.addEventListener("click", function () {
+                const searchInput = document.getElementById("searchProvider").value.trim();
+                searchProviders(searchInput);
+            });
+        }
+    }
+});
+
+// Fonction de recherche des prestataires
+function searchProviders(query) {
+    const accessToken = localStorage.getItem("access_token");
+
+    fetch(`http://127.0.0.1:8000/providers/?query=${encodeURIComponent(query)}`, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    })
+    .then(response => {
+        if (response.status === 401) {
+            refreshToken();
+            throw new Error("Token expiré");
+        }
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des prestataires.");
+        }
+        return response.json();
+    })
+    .then(data => {
+        updateProviderTable(data);
+    })
+    .catch(error => console.error("Erreur lors de la recherche :", error));
+}
+
+// Fonction pour mettre à jour le tableau des prestataires
+function updateProviderTable(providers) {
+    let tableBody = document.getElementById("providersTableBody");
+    if (!tableBody) {
+        console.error("Erreur: Élément #providersTableBody introuvable.");
+        return;
+    }
+    tableBody.innerHTML = ""; // Nettoyer le tableau avant d'ajouter de nouvelles données
+
+    providers.forEach(provider => {
+        let row = `<tr>
+            <td>${provider.id}</td>
+            <td>${provider.fullname}</td>
+            <td>${provider.email}</td>
+            <td>${provider.gender}</td>
+            <td>${provider.phone}</td>
+            <td>${provider.address}</td>
+            <td>${provider.service}</td>
+            <td><span class="badge ${provider.is_disponible ? 'bg-success' : 'bg-danger'}">${provider.is_disponible ? 'Available' : 'Unavailable'}</span></td>
+            <td>${provider.rating_avg} ⭐</td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="editProvider(${provider.id})"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteProvider(${provider.id})"><i class="bi bi-trash"></i></button>
+            </td>
+        </tr>`;
+        tableBody.innerHTML += row;
     });
 }
