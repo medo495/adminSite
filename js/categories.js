@@ -1,39 +1,66 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const apiUrl = 'https://your-api-endpoint.com/categories'; // Replace with your API endpoint
-    let categories = []; // To store fetched categories
+document.addEventListener('DOMContentLoaded', function () {
+    const apiUrl = 'http://127.0.0.1:8000/categories/'; // Remplacez par votre endpoint API
+    let categories = []; // Pour stocker les catégories récupérées
 
-    // Fetch and display categories
+    // Fonction pour récupérer les catégories
     function fetchCategories() {
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                categories = data; // Store categories
-                displayCategories(categories); // Display all categories initially
-            })
-            .catch(error => console.error('Error fetching categories:', error));
+        const accessToken = localStorage.getItem('access_token'); // Récupérer le token d'accès
+
+        fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}` // Ajouter l'en-tête d'autorisation
+            }
+        })
+        .then(response => {
+            if (response.status === 401) {
+                // Si le token est expiré, essayer de le rafraîchir
+                return refreshToken().then(() => fetchCategories()); // Réessayer après rafraîchissement
+            } else if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des catégories.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            categories = data; // Stocker les catégories
+            displayCategories(categories); // Afficher les catégories
+        })
+        .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
     }
 
-    // Display categories in the table
+    // Fonction pour afficher les catégories dans le tableau
     function displayCategories(categoriesToDisplay) {
         const tableBody = document.getElementById('categoriesTableBody');
-        tableBody.innerHTML = ''; // Clear existing rows
+        if (!tableBody) {
+            console.error('Erreur: Élément #categoriesTableBody introuvable.');
+            return;
+        }
+    
+        tableBody.innerHTML = ''; // Effacer les lignes existantes
+    
+        if (!Array.isArray(categoriesToDisplay)) {
+            console.error('Erreur: Les données reçues ne sont pas un tableau.');
+            return;
+        }
+    
         categoriesToDisplay.forEach(category => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${category.id}</td>
-                <td>${category.name}</td>
-                <td>${category.description}</td>
+                <td>${category.category_id}</td>
+                <td>${category.category_name}</td>
+                <td>${category.category_description}</td>
                 <td>
-                    <button onclick="deleteCategory(${category.id})" class="btn btn-danger btn-sm">Delete</button>
+                    <button onclick="deleteCategory(${category.category_id})" class="btn btn-danger btn-sm">Delete</button>
                 </td>
             `;
             tableBody.appendChild(row);
         });
     }
 
-    // Add a new category
-    document.getElementById('addCategoryForm').addEventListener('submit', function(event) {
+    // Fonction pour ajouter une nouvelle catégorie
+    document.getElementById('addCategoryForm').addEventListener('submit', function (event) {
         event.preventDefault();
+
+        const accessToken = localStorage.getItem('access_token'); // Récupérer le token d'accès
         const categoryName = document.getElementById('categoryName').value;
         const categoryDescription = document.getElementById('categoryDescription').value;
 
@@ -41,43 +68,113 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}` // Ajouter l'en-tête d'autorisation
             },
             body: JSON.stringify({
-                name: categoryName,
-                description: categoryDescription
+                category_name: categoryName,
+                category_description: categoryDescription
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            fetchCategories(); // Refresh the list
-            document.getElementById('addCategoryForm').reset(); // Clear the form
+        .then(response => {
+            if (response.status === 401) {
+                // Si le token est expiré, essayer de le rafraîchir
+                return refreshToken().then(() => {
+                    // Réessayer après rafraîchissement
+                    return fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                        },
+                        body: JSON.stringify({
+                            category_name: categoryName,
+                            category_description: categoryDescription
+                        })
+                    });
+                });
+            } else if (!response.ok) {
+                throw new Error('Erreur lors de l\'ajout de la catégorie hhh.');
+            }
+            return response.json();
         })
-        .catch(error => console.error('Error adding category:', error));
+        .then(data => {
+            fetchCategories(); // Rafraîchir la liste des catégories
+            document.getElementById('addCategoryForm').reset(); // Réinitialiser le formulaire
+        })
+        .catch(error => console.error('Erreur lors de l\'ajout de la catégorie :', error));
     });
 
-    // Delete a category
-    window.deleteCategory = function(categoryId) {
-        fetch(`${apiUrl}/${categoryId}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (response.ok) {
-                fetchCategories(); // Refresh the list
+    // Fonction pour supprimer une catégorie
+    window.deleteCategory = function (categoryId) {
+        const accessToken = localStorage.getItem('access_token'); // Récupérer le token d'accès
+
+        fetch(`${apiUrl}?id=${categoryId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${accessToken}` // Ajouter l'en-tête d'autorisation
             }
         })
-        .catch(error => console.error('Error deleting category:', error));
+        .then(response => {
+            if (response.status === 401) {
+                // Si le token est expiré, essayer de le rafraîchir
+                return refreshToken().then(() => {
+                    // Réessayer après rafraîchissement
+                    return fetch(`${apiUrl}${categoryId}/`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                        }
+                    });
+                });
+            } else if (!response.ok) {
+                throw new Error('Erreur lors de la suppression de la catégorie.');
+            }
+            fetchCategories(); // Rafraîchir la liste des catégories
+        })
+        .catch(error => console.error('Erreur lors de la suppression de la catégorie :', error));
     };
 
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', function(event) {
-        const searchTerm = event.target.value.toLowerCase();
-        const filteredCategories = categories.filter(category => 
-            category.name.toLowerCase().includes(searchTerm) || 
-            category.description.toLowerCase().includes(searchTerm)
+    // Fonction pour rechercher des catégories
+    document.getElementById('searchButton').addEventListener('click', function (event) {
+        event.preventDefault(); // Empêcher le rechargement de la page si le bouton est dans un formulaire
+
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filteredCategories = categories.filter(category =>
+            category.category_name.toLowerCase().includes(searchTerm) ||
+            category.category_description.toLowerCase().includes(searchTerm)
         );
         displayCategories(filteredCategories);
     });
 
-    // Initial fetch to populate the table
+    // Fonction pour rafraîchir le token d'accès
+    function refreshToken() {
+        const refreshToken = localStorage.getItem('refresh_token'); // Récupérer le token de rafraîchissement
+
+        return fetch('http://127.0.0.1:8000/token/refresh/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ refresh: refreshToken })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Échec du rafraîchissement du token.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            localStorage.setItem('access_token', data.access_token); // Stocker le nouveau token d'accès
+            console.log('Token rafraîchi avec succès.');
+        })
+        .catch(error => {
+            console.error('Erreur lors du rafraîchissement du token :', error);
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = 'login.html'; // Rediriger vers la page de connexion
+        });
+    }
+
+    // Charger les catégories au démarrage
     fetchCategories();
 });
