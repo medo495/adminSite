@@ -1,0 +1,140 @@
+body {
+    background: #f5f5f5;
+    margin-top: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ui-w-80 {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ui-w-80:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-default {
+    border-color: rgba(24, 28, 33, 0.1);
+    background: rgba(0, 0, 0, 0);
+    color: #4E5155;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-default:hover {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.btn-outline-primary {
+    border-color: #26B4FF;
+    background: transparent;
+    color: #26B4FF;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #26B4FF;
+    color: #fff;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.text-light {
+    color: #babbbc !important;
+}
+
+.btn-facebook {
+    border-color: rgba(0, 0, 0, 0);
+    background: #3B5998;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-facebook:hover {
+    background-color: #344e86;
+}
+
+.btn-instagram {
+    border-color: rgba(0, 0, 0, 0);
+    background: #000;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-instagram:hover {
+    background-color: #333;
+}
+
+.card {
+    background-clip: padding-box;
+    box-shadow: 0 1px 4px rgba(24, 28, 33, 0.012);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.row-bordered {
+    overflow: hidden;
+}
+
+.account-settings-fileinput {
+    position: absolute;
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.account-settings-links .list-group-item.active {
+    font-weight: bold !important;
+    background-color: #26B4FF !important;
+    color: #fff !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.account-settings-links .list-group-item {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.account-settings-links .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .media {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .media img {
+        margin-bottom: 10px;
+    }
+
+    .media-body {
+        margin-left: 0;
+    }
+}

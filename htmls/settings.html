@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Brand Name -->
+            <a class="navbar-brand" href="../htmls/dashboard.html">
+                <i class="fas fa-link"></i> ServiceLink
+            </a>
+
+            <!-- Search Bar -->
+            <form class="d-flex mx-auto w-50">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
+
+            <!-- Navbar Links with Icons -->
+            <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
+                <!-- Messages -->
+                <a class="nav-link position-relative text-white" href="#">
+                    <i class="fas fa-envelope fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        5
+                    </span>
+                </a>
+
+                <!-- Notifications -->
+                <a class="nav-link position-relative text-white" href="#">
+                    <i class="fas fa-bell fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                    </span>
+                </a>
+
+                <!-- Admin Profile -->
+                <a class="nav-link text-white" href="../htmls/profile.html">
+                    <i class="fas fa-user-circle fs-4"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 p-3 vh-100 position-fixed sidebar">
+                <div class="d-flex flex-column">
+                    <a class="nav-link text-white py-2 px-3 mb-3 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/dashboard.html">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/providers.html">
+                        <i class="fas fa-users me-2"></i> Providers
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/beneficiaries.html">
+                        <i class="fas fa-hand-holding-heart me-2"></i> Customers
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/categories.html">
+                        <i class="fas fa-list-alt me-2"></i> Categories
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/requests.html">
+                        <i class="fas fa-clipboard-list me-2"></i> Requests
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/links.html">
+                        <i class="fas fa-link me-2"></i> Links
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link active animate__animated animate__fadeInLeft" href="../htmls/settings.html">
+                        <i class="fas fa-cog me-2"></i> Settings
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/reports.html">
+                        <i class="fas fa-chart-line me-2"></i> Reports
+                    </a>
+                    <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/logout.html">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 ms-auto p-4">
+                <div class="mt-5">
+                    <h2 class="mb-4">Settings</h2>
+                    <p class="text-muted">
+                        Manage your system settings, user preferences, and security configurations.
+                    </p>
+
+                    <!-- General Settings Section -->
+                    <div class="card mb-4 animate__animated animate__fadeIn">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fas fa-cogs me-2"></i> General Settings
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="systemName" class="form-label">System Name</label>
+                                    <input type="text" class="form-control" id="systemName" value="ServiceLink">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="timezone" class="form-label">Timezone</label>
+                                    <select class="form-select" id="timezone">
+                                        <option selected>UTC +00:00</option>
+                                        <option>UTC +01:00</option>
+                                        <option>UTC +02:00</option>
+                                        <!-- Add more timezones as needed -->
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i> Save Changes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- User Preferences Section -->
+                    <div class="card mb-4 animate__animated animate__fadeIn">
+                        <div class="card-header bg-success text-white">
+                            <i class="fas fa-user-cog me-2"></i> User Preferences
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="theme" class="form-label">Theme</label>
+                                    <select class="form-select" id="theme">
+                                        <option selected>Light</option>
+                                        <option>Dark</option>
+                                        <option>Auto</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="language" class="form-label">Language</label>
+                                    <select class="form-select" id="language">
+                                        <option selected>English</option>
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <!-- Add more languages as needed -->
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-2"></i> Save Preferences
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings Section -->
+                    <div class="card mb-4 animate__animated animate__fadeIn">
+                        <div class="card-header bg-danger text-white">
+                            <i class="fas fa-shield-alt me-2"></i> Security Settings
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Change Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Enter new password">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="twoFactorAuth" class="form-label">Two-Factor Authentication</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="twoFactorAuth">
+                                        <label class="form-check-label" for="twoFactorAuth">
+                                            Enable Two-Factor Authentication
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-save me-2"></i> Update Security
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="dashboard.js"></script>
+</body>
+</html>

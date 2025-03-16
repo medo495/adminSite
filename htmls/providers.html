@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Categories</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+   
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Brand Name -->
+            <a class="navbar-brand" href="../htmls/dashboard.html">
+                <i class="fas fa-link"></i> ServiceLink
+            </a>
+
+            <!-- Search Bar -->
+            <form class="d-flex mx-auto w-50">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
+
+            <!-- Navbar Links with Icons -->
+            <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
+                <!-- Messages -->
+                <a class="nav-link position-relative text-white" href="#">
+                    <i class="fas fa-envelope fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        5
+                    </span>
+                </a>
+
+                <!-- Notifications -->
+                <a class="nav-link position-relative text-white" href="#">
+                    <i class="fas fa-bell fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                    </span>
+                </a>
+
+                <!-- Admin Profile -->
+                <a class="nav-link text-white" href="../htmls/profile.html">
+                    <i class="fas fa-user-circle fs-4"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+   <!-- Sidebar -->
+<div class="col-md-2 p-3 vh-100 position-fixed sidebar">
+    <div class="d-flex flex-column">
+        <a class="nav-link text-white py-2 px-3 mb-3 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/dashboard.html">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link active animate__animated animate__fadeInLeft" href="../htmls/providers.html">
+            <i class="fas fa-users me-2"></i> Providers
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/beneficiaries.html">
+            <i class="fas fa-hand-holding-heart me-2"></i> Customers
+        </a>
+        <!-- Updated Categories Icon -->
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/categories.html">
+            <i class="fas fa-list-alt me-2"></i> Categories
+        </a>
+        <!-- Updated Requests Icon -->
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/requests.html">
+            <i class="fas fa-clipboard-list me-2"></i> Requests
+        </a>
+        <!-- Updated Links Icon -->
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/links.html">
+            <i class="fas fa-link me-2"></i> Links
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/settings.html">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/reports.html">
+            <i class="fas fa-chart-line me-2"></i> Reports
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/logout.html">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+    </div>
+</div>
+          <!-- Main Content Area -->
+<div class="col-md-10 ms-auto p-4">
+    <h2 class="mb-4 animate__animated animate__fadeInDown">Providers Management</h2>
+
+    <!-- Search Bar and Add Provider Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeInUp">
+        <div class="input-group w-50">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search providers...">
+            <button class="btn btn-primary">Search</button>
+        </div>
+        <a href="add_provider.html" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Add Provider
+        </a>
+    </div>
+
+    <!-- Providers Table -->
+    <div class="table-responsive animate__animated animate__fadeInUp">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Services</th>
+                    <th>Availability</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="providersTableBody">   
+                <tr id="noDataMessage">
+                    <td colspan="10" class="text-center">No providers found</td>
+                </tr>       
+                
+                   
+                   
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/providers.js"></script>
+</body>
+</html>

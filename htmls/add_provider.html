@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Provider</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);      
+            height: auto;
+            margin: 0 auto; /* Center the form */
+
+        }
+        .form-container h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .form-floating label {
+            color: #6c757d;
+        }
+        .form-floating input,
+        .form-floating select {
+            border-radius: 10px;
+        }
+        .btn-custom {
+            width: 100%;
+            background-color: #007bff;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container" >
+        <h2 class="text-center mb-4">Add Provider</h2>
+
+        <div id="alertMessage" class="alert d-none" role="alert"></div>
+        <form id="addProviderForm" class="needs-validation" novalidate>
+            <!-- Full Name -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="providerName" placeholder="Full Name" required>
+                <label for="fullname"><i class="bi bi-person"></i> Full Name</label>
+                <div class="invalid-feedback">Please enter the full name.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="providerEmail" placeholder="Email" required>
+                <label for="email"><i class="bi bi-envelope"></i> Email</label>
+                <div class="invalid-feedback">Please enter a valid email.</div>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-floating mb-3">
+                <select class="form-select" id="providerGender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <label for="gender"><i class="bi bi-gender-ambiguous"></i> Gender</label>
+                <div class="invalid-feedback">Please select a gender.</div>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="providerPhone" placeholder="Phone" required>
+                <label for="phone"><i class="bi bi-phone"></i> Phone</label>
+                <div class="invalid-feedback">Please enter a phone number.</div>
+            </div>
+
+            <!-- Address -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="providerAddress" placeholder="Address" required>
+                <label for="address"><i class="bi bi-geo-alt"></i> Address</label>
+                <div class="invalid-feedback">Please enter an address.</div>
+            </div>
+
+            <!-- Services -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="providerServices" placeholder="Services" required>
+                <label for="services"><i class="bi bi-tools"></i> Services</label>
+                <div class="invalid-feedback">Please enter services.</div>
+            </div>
+
+            <!-- Availability -->
+            <div class="form-floating mb-4">
+                <select class="form-select" id="providerAvailability" required>
+                    <option value="">Select Availability</option>
+                    <option value="Available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                </select>
+                <label for="availability"><i class="bi bi-toggle-on"></i> Availability</label>
+                <div class="invalid-feedback">Please select availability.</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-custom">
+                <i class="bi bi-person-plus"></i> Add Provider
+            </button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   ]
+   <script src="../js/providers.js"></script>
+
+</body>
+</html>

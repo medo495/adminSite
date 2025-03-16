@@ -1,0 +1,203 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    padding-top: 70px; /* To account for the fixed navbar */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #007bff;
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar-nav a {
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Sidebar */
+#sidebar {
+    background-color: #343a40;
+    padding-top: 20px;
+    height: 100vh;
+    position: fixed;
+    width: 220px;
+    box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-link {
+    font-size: 1.1rem;
+    padding: 12px 15px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background-color: #5c636a;
+    cursor: pointer;
+}
+
+.sidebar-link.active {
+    background-color: #3498db;
+}
+
+/* Main Content */
+main {
+    margin-left: 240px;
+    padding: 2rem;
+
+}
+
+/* Cards */
+/* Add space between overview cards */
+.row-cols-1 .col {
+    margin-bottom: 10px;  /*Add bottom margin for spacing between rows */
+}
+
+.card {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Overview card styling */
+.card-body {
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 20px;
+}
+
+
+.card-header {
+    font-weight: 600;
+}
+
+
+
+.bg-info {
+    background-color: #17a2b8 !important;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    #sidebar {
+        display: none;
+    }
+
+    main {
+        margin-left: 0;
+    }
+
+    .navbar {
+        padding: 1rem;
+    }
+}
+
+ /* Custom Styles */
+ body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar {
+    background: linear-gradient(180deg, #2c3e50, #34495e);
+    color: white;
+}
+
+.sidebar-link {
+    transition: all 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background: #3498db;
+    transform: translateX(5px);
+}
+
+.navbar {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #1abc9c, #16a085);
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    color: white;
+}
+
+.table tbody tr {
+    transition: background 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: #f1f1f1;
+}
+
+.input-group {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.input-group input {
+    border: none;
+}
+
+.input-group button {
+    background: linear-gradient(90deg, #1abc9c, #16a085);
+    border: none;
+    color: white;
+}
+
+.input-group button:hover {
+    background: linear-gradient(90deg, #16a085, #1abc9c);
+}
+
+.animate__animated {
+    animation-duration: 0.5s;
+}
+
