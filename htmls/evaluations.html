@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ServiceLink</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <!-- Brand Name -->
+            <a class="navbar-brand" href="../htmls/dashboard.html">
+                <i class="fas fa-link"></i> ServiceLink
+            </a>
+
+            <!-- Search Bar -->
+            <form class="d-flex mx-auto w-50">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
+
+            <!-- Navbar Links with Icons -->
+            <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
+                <!-- Messages -->
+                <a class="nav-link position-relative text-white" href="#">
+                    <i class="fas fa-envelope fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        5
+                    </span>
+                </a>
+
+                <!-- Notifications -->
+                <a class="nav-link position-relative text-white" href="#">
+                    <i class="fas fa-bell fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                    </span>
+                </a>
+
+                <!-- Admin Profile -->
+                <a class="nav-link text-white" href="../htmls/profile.html">
+                    <i class="fas fa-user-circle fs-4"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+       <!-- Sidebar -->
+<div class="col-md-2 p-3 vh-100 position-fixed sidebar">
+    <div class="d-flex flex-column">
+        <a class="nav-link text-white py-2 px-3 mb-3 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/dashboard.html">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/providers.html">
+            <i class="fas fa-users me-2"></i> Providers
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/beneficiaries.html">
+            <i class="fas fa-hand-holding-heart me-2"></i> Customers
+        </a>
+        <!-- Updated Categories Icon -->
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/categories.html">
+            <i class="fas fa-list-alt me-2"></i> Categories
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/services.html">
+            <i class="fas fa-cogs me-2"></i> Services
+        </a>
+        <!-- Updated Requests Icon -->
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/requests.html">
+            <i class="fas fa-clipboard-list me-2"></i> Requests
+        </a>
+        <!-- Updated Links Icon -->
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/links.html">
+            <i class="fas fa-link me-2"></i> Links
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated active animate__fadeInLeft" href="../htmls/evaluations.html">
+            <i class="fas fa-star-half-alt me-2"></i> Ratings
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/settings.html">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/reports.html">
+            <i class="fas fa-chart-line me-2"></i> Reports
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/logout.html">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+    </div>
+</div>
+
+ <!-- main content -->
+
+    <!-- Main Content -->
+<div class="col-md-10 ms-auto p-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-star-half-alt me-2"></i> Service Ratings & Reviews</h2>
+            
+            <!-- Filter Section -->
+            <div class="card mb-4 animate__animated animate__fadeIn">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="ratingFilter" class="form-label">Rating</label>
+                            <select class="form-select" id="ratingFilter">
+                                <option value="all">All Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="dateFilter" class="form-label">Date Range</label>
+                            <select class="form-select" id="dateFilter">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="serviceFilter" class="form-label">Service</label>
+                            <select class="form-select" id="serviceFilter">
+                                <option value="all">All Services</option>
+                                <!-- Will be populated by JS -->
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" id="applyFilters">
+                                <i class="fas fa-filter me-2"></i> Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Ratings</h5>
+                            <h2 class="card-text" id="totalRatings">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <h5 class="card-title">Average Rating</h5>
+                            <h2 class="card-text" id="avgRating">0.0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <h5 class="card-title">5-Star Ratings</h5>
+                            <h2 class="card-text" id="fiveStarRatings">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <h5 class="card-title">Low Ratings (1-2)</h5>
+                            <h2 class="card-text" id="lowRatings">0</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ratings Table -->
+            <div class="card animate__animated animate__fadeIn">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="evaluationsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Provider</th>
+                                    <th>Service</th>
+                                    <th>Rating</th>
+                                    <th>Comment</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- Will be populated by JS -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+      
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/evaluations.js"></script>
+</body>
+</html>

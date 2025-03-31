@@ -73,18 +73,23 @@
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/categories.html">
             <i class="fas fa-list-alt me-2"></i> Categories
         </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/services.html">
+            <i class="fas fa-cogs me-2"></i> Services
+        </a>
         <!-- Updated Requests Icon -->
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/requests.html">
             <i class="fas fa-clipboard-list me-2"></i> Requests
         </a>
-        <!-- Updated Links Icon -->
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/links.html">
             <i class="fas fa-link me-2"></i> Links
         </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/evaluations.html">
+            <i class="fas fa-star-half-alt me-2"></i> Ratings
+        </a>        
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/settings.html">
             <i class="fas fa-cog me-2"></i> Settings
         </a>
-        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link active animate__fadeInLeft" href="../htmls/reports.html">
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link active animate__animated animate__fadeInLeft" href="../htmls/reports.html">
             <i class="fas fa-chart-line me-2"></i> Reports
         </a>
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/logout.html">
@@ -93,7 +98,49 @@
     </div>
 </div>
 
-            
+       <!-- Main Content Area -->
+<div class="col-md-10 ms-auto p-4">
+    <h2 class="mb-4 animate__animated animate__fadeInDown">Reports Management</h2>
+
+    <!-- Search Bar and Filter Buttons -->
+    <div class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeInUp">
+        <div class="input-group w-50">
+            <input type="text" id="searchReportInput" class="form-control" placeholder="Search reports...">
+            <button class="btn btn-primary" type="button" id="searchReportButton">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-outline-secondary filter-btn" data-status="all">All</button>
+            <button class="btn btn-outline-secondary filter-btn" data-status="pending">Pending</button>
+            <button class="btn btn-outline-secondary filter-btn" data-status="resolved">Resolved</button>
+        </div>
+    </div>
+
+    <!-- Reports Table -->
+    <div class="table-responsive animate__animated animate__fadeInUp">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Link ID</th>
+                    <th>User</th>
+                    <th>Provider</th>
+                    <th>Report Text</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="reportsTableBody">
+                <!-- Reports will be dynamically inserted here -->
+                <tr id="noDataMessage">
+                    <td colspan="8" class="text-center">No reports found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->

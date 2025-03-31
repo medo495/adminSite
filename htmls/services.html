@@ -8,67 +8,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <!-- Animate.css for animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../styles/dashboard.css">
-  <style>
-    /* Make the navbar thinner by reducing padding and font size */
-    .navbar {
-      padding: 14px 15px; /* Reduced padding */
-    }
-
-    .navbar-nav .nav-link {
-      font-size: 14px; /* Reduced font size */
-    }
-
-    /* Adjust the height of the navbar */
-    .navbar-nav {
-      padding-top: 8px; /* Reduce space above the links */
-    }
-
-    /* Adjust main content to account for the fixed sidebar */
-    .main-content {
-      margin-left: 16.67%; /* roughly equivalent to the 2-column sidebar width */
-    }
-    
-   
-
-    .table-wrapper {
-      margin-left: 16.67%; /* Align the table to the sidebar */
-      padding: 20px;
-    }
-
-    /* Style the thead with a blue background */
-    thead {
-      background-color: #007bff; /* Blue background */
-      color: white;
-    }
-
-    /* Style the table header text */
-    thead th {
-      text-align: center;
-    }
-
-    /* Optional: Add some padding and spacing to the table rows */
-    tbody td {
-      text-align: center;
-    }
-
-    /* Title style */
-    h1 {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    /* Search bar style */
-    .search-bar-wrapper {
-      margin-bottom: 20px;
-      text-align: right;
-    }
-  </style>
+  
 </head>
 <body>
   <!-- Top Navigation Bar -->
@@ -84,18 +30,21 @@
       </form>
       <!-- Navbar Links with Icons -->
       <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
+        <!-- Messages -->
         <a class="nav-link position-relative text-white" href="#">
           <i class="fas fa-envelope fs-5"></i>
           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             5
           </span>
         </a>
+        <!-- Notifications -->
         <a class="nav-link position-relative text-white" href="#">
           <i class="fas fa-bell fs-5"></i>
           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             3
           </span>
         </a>
+        <!-- Admin Profile -->
         <a class="nav-link text-white" href="../htmls/profile.html">
           <i class="fas fa-user-circle fs-4"></i>
         </a>
@@ -121,14 +70,12 @@
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/categories.html">
             <i class="fas fa-list-alt me-2"></i> Categories
         </a>
-        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/services.html">
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link active animate__animated animate__fadeInLeft" href="../htmls/services.html">
             <i class="fas fa-cogs me-2"></i> Services
         </a>
-        <!-- Updated Requests Icon -->
-        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link active animate__animated animate__fadeInLeft" href="../htmls/requests.html">
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/requests.html">
             <i class="fas fa-clipboard-list me-2"></i> Requests
         </a>
-        <!-- Updated Links Icon -->
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/links.html">
             <i class="fas fa-link me-2"></i> Links
         </a>
@@ -146,51 +93,52 @@
         </a>
         </div>
       </div>
-      
-      <!-- Main Content -->
-      <div class="col-md-10 offset-md-2 table-wrapper">
-       <!-- Title and Search Bar -->
-       <h2 class="mb-4 animate__animated animate__fadeInDown">Requests Management</h2>
-       <!-- Search Bar and Add Provider Button -->
-    
- <!-- Search Bar and Add Provider Button -->
- <div class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeInUp">
+
+     <!-- Main Content Area -->
+<div class="col-md-10 ms-auto p-4">
+  <h2 class="mb-4 animate__animated animate__fadeInDown">Services Management</h2>
+
+  <!-- Search Bar and Add Service Button -->
+<div class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeInUp">
   <div class="input-group w-50">
-      <input type="text" id="searchInput" class="form-control" placeholder="Search requests...">
-      <button class="btn btn-primary" type="button" id="searchButton">
+      <input type="text" id="searchServiceInput" class="form-control" placeholder="Search services...">
+    
+      <button class="btn btn-primary" type="button" id="searchServiceButton">
           <i class="fas fa-search"></i>
       </button>
   </div>
-  <a href="add_request.html" class="btn btn-success">
-      <i class="bi bi-plus-lg"></i> Add Request
+  <a href="add_service.html" class="btn btn-success">
+      <i class="fas fa-plus"></i> Add Service
   </a>
 </div>
 
-        <!-- Table -->
-        <table class="table table-bordered">
+  <!-- Services Table -->
+  <div class="table-responsive animate__animated animate__fadeInUp">
+      <table class="table table-striped table-bordered">
           <thead>
-            <tr>
-              <th scope="col">Request ID</th>
-              <th scope="col">User ID</th>
-              <th scope="col">Service ID</th>
-              <th scope="col">Selected Dates</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
+              <tr>
+                  <th>ID</th>
+                  <th>Service Name</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+              </tr>
           </thead>
-          <tbody id="requestsTableBody">
-            <!-- Rows will be dynamically inserted here -->
+          <tbody id="servicesTableBody">
+              <tr id="noDataMessage">
+                  <td colspan="6" class="text-center">No services found</td>
+              </tr>
           </tbody>
-        </table>
-      </div>
-    </div> <!-- End of row -->
-  </div> <!-- End of container-fluid -->
+      </table>
+  </div>
+</div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Custom JS -->
-  <script src="../js/requests.js"></script>
+  <script src="../js/services.js"></script>
 </body>
 </html>

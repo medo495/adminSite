@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    
     // Fonction pour ajouter une nouvelle catégorie
     document.getElementById('addCategoryForm').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.deleteCategory = function (categoryId) {
         const accessToken = localStorage.getItem('access_token');
 
-        fetch(`${apiUrl}${categoryId}/`, {
+        fetch(`${apiUrl}?id=${categoryId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${accessToken}`

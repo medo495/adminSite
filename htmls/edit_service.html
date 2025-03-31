@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Service</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .form-floating label {
+            color: #6c757d;
+        }
+        .form-floating input,
+        .form-floating textarea,
+        .form-floating select {
+            border-radius: 10px;
+        }
+        .btn-custom {
+            width: 100%;
+            background-color: #007bff;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="text-center mb-4">Edit Service</h2>
+
+        <div id="alertMessage" class="alert d-none" role="alert"></div>
+        <form id="editServiceForm" class="needs-validation" novalidate>
+            <!-- Hidden Service ID -->
+            <input type="hidden" id="serviceId">
+
+            <!-- Service Name -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="serviceName" placeholder="Service Name" required>
+                <label for="serviceName"><i class="bi bi-tag"></i> Service Name</label>
+                <div class="invalid-feedback">Please enter the service name.</div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="serviceDescription" placeholder="Description" style="height: 100px;" required></textarea>
+                <label for="serviceDescription"><i class="bi bi-textarea-resize"></i> Description</label>
+                <div class="invalid-feedback">Please enter a description.</div>
+            </div>
+
+             <!-- Category -->
+             <div class="form-floating mb-3">
+                <select class="form-select category-select" id="serviceCategory" required>
+                    <option value="">Select Category</option>
+                    <!-- Categories will be dynamically populated -->
+                </select>
+                <label for="serviceCategory"><i class="bi bi-box-seam"></i> Category</label>
+                <div class="invalid-feedback">Please select a category.</div>
+            </div>
+
+            <!-- Price -->
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="servicePrice" placeholder="Price" step="0.01" required>
+                <label for="servicePrice"><i class="bi bi-currency-dollar"></i> Price</label>
+                <div class="invalid-feedback">Please enter the price.</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-custom">
+                <i class="bi bi-pencil-square"></i> Save Changes
+            </button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- External JavaScript -->
+    <script src="../js/services.js"></script>
+</body>
+</html>

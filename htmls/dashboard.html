@@ -10,6 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Animate.css for animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+      <!-- Bootstrap 5 CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <!-- Animate.css -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+      <!-- Chart.js -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../styles/dashboard.css">
 </head>
@@ -22,10 +30,7 @@
                 <i class="fas fa-link"></i> ServiceLink
             </a>
 
-            <!-- Search Bar -->
-            <form class="d-flex mx-auto w-50">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            </form>
+           
 
             <!-- Navbar Links with Icons -->
             <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
@@ -55,7 +60,6 @@
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
            <!-- Sidebar -->
 <div class="col-md-2 p-3 vh-100 position-fixed sidebar">
     <div class="d-flex flex-column">
@@ -72,6 +76,9 @@
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/categories.html">
             <i class="fas fa-list-alt me-2"></i> Categories
         </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/services.html">
+            <i class="fas fa-cogs me-2"></i> Services
+        </a>
         <!-- Updated Requests Icon -->
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/requests.html">
             <i class="fas fa-clipboard-list me-2"></i> Requests
@@ -79,6 +86,9 @@
         <!-- Updated Links Icon -->
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/links.html">
             <i class="fas fa-link me-2"></i> Links
+        </a>
+        <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/evaluations.html">
+            <i class="fas fa-star-half-alt me-2"></i> Ratings
         </a>
         <a class="nav-link text-white py-2 px-3 mb-2 rounded-3 sidebar-link animate__animated animate__fadeInLeft" href="../htmls/settings.html">
             <i class="fas fa-cog me-2"></i> Settings
@@ -92,88 +102,321 @@
     </div>
 </div>
 
+
+
+  
+   
+
+    <div class="container-fluid">
+        <div class="row">
             <!-- Main Content -->
             <main class="col-md-10 ms-auto p-4">
-                <!-- Key Metrics -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card bg-primary text-white animate__animated animate__fadeIn">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Users</h5>
-                                <p class="card-text" id="total-users">Loading...</p>
-                            </div>
+                <!-- Dashboard Header -->
+                <div class="dashboard-header animate__animated animate__fadeIn">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h2><i class="fas fa-tachometer-alt me-2"></i> Service Dashboard</h2>
+                            <p class="mb-0">Welcome back! Here's what's happening with your service platform.</p>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-success text-white animate__animated animate__fadeIn">
-                            <div class="card-body">
-                                <h5 class="card-title">Active Providers</h5>
-                                <p class="card-text" id="active-providers">Loading...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-warning text-white animate__animated animate__fadeIn">
-                            <div class="card-body">
-                                <h5 class="card-title">Completed Bookings</h5>
-                                <p class="card-text" id="completed-bookings">Loading...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card bg-danger text-white animate__animated animate__fadeIn">
-                            <div class="card-body">
-                                <h5 class="card-title">Customer Satisfaction</h5>
-                                <p class="card-text" id="customer-satisfaction">Loading...</p>
+                        <div class="col-md-6 text-md-end">
+                            <div class="btn-group">
+                                <button class="btn btn-outline-light btn-sm">Today</button>
+                                <button class="btn btn-outline-light btn-sm">Week</button>
+                                <button class="btn btn-outline-light btn-sm active">Month</button>
+                                <button class="btn btn-outline-light btn-sm">Year</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Charts and Graphs -->
+                <!-- Quick Actions -->
+                <div class="row mb-4 animate__animated animate__fadeIn">
+                    <div class="col-12">
+                        <div class="quick-actions">
+                            <a href="add_service.html" class="quick-action-btn">
+                                <i class="fas fa-plus-circle quick-action-icon"></i>
+                                <span>Add Service</span>
+                            </a>
+                            <a href="add_provider.html" class="quick-action-btn">
+                                <i class="fas fa-user-plus quick-action-icon"></i>
+                                <span>New Provider</span>
+                            </a>
+                            <a href="#" class="quick-action-btn">
+                                <i class="fas fa-file-invoice-dollar quick-action-icon"></i>
+                                <span>Generate Report</span>
+                            </a>
+                            <a href="#" class="quick-action-btn">
+                                <i class="fas fa-bell quick-action-icon"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Metrics -->
                 <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="card animate__animated animate__fadeInLeft">
-                            <div class="card-header">
-                                Booking Trends
-                            </div>
+                    <div class="col-md-3">
+                        <div class="card metric-card bg-primary animate__animated animate__fadeIn">
                             <div class="card-body">
-                                <canvas id="bookingTrendsChart"></canvas>
+                                <i class="fas fa-users metric-icon"></i>
+                                <h5 class="metric-title">Total Users</h5>
+                                <p class="metric-value" id="total-users">2,458</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-white text-primary me-2">+12%</span>
+                                    <small>vs last month</small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card animate__animated animate__fadeInRight">
+                    <div class="col-md-3">
+                        <div class="card metric-card bg-success animate__animated animate__fadeIn">
+                            <div class="card-body">
+                                <i class="fas fa-briefcase metric-icon"></i>
+                                <h5 class="metric-title">Active Providers</h5>
+                                <p class="metric-value" id="active-providers">184</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-white text-success me-2">+5%</span>
+                                    <small>vs last month</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card metric-card bg-warning animate__animated animate__fadeIn">
+                            <div class="card-body">
+                                <i class="fas fa-calendar-check metric-icon"></i>
+                                <h5 class="metric-title">Completed Bookings</h5>
+                                <p class="metric-value" id="completed-bookings">1,287</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-white text-warning me-2">+23%</span>
+                                    <small>vs last month</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card metric-card bg-info animate__animated animate__fadeIn">
+                            <div class="card-body">
+                                <i class="fas fa-star metric-icon"></i>
+                                <h5 class="metric-title">Satisfaction Rate</h5>
+                                <p class="metric-value" id="customer-satisfaction">94%</p>
+                                <div class="progress progress-thin mt-2">
+                                    <div class="progress-bar bg-white" role="progressbar" style="width: 94%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Row -->
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-lg-8">
+                        <!-- Booking Trends Chart -->
+                        <div class="card animate__animated animate__fadeInLeft mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Booking Trends</span>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-secondary active">Daily</button>
+                                    <button class="btn btn-outline-secondary">Weekly</button>
+                                    <button class="btn btn-outline-secondary">Monthly</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="bookingTrendsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="card animate__animated animate__fadeInLeft">
+                            <div class="card-header">
+                                Recent Transactions
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Customer</th>
+                                                <th>Service</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#TRX-7890</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="user-avatar me-2">
+                                                        <span>Sarah Johnson</span>
+                                                    </div>
+                                                </td>
+                                                <td>Home Cleaning</td>
+                                                <td>$85.00</td>
+                                                <td><span class="status-badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX-7889</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="user-avatar me-2">
+                                                        <span>Michael Chen</span>
+                                                    </div>
+                                                </td>
+                                                <td>Plumbing Repair</td>
+                                                <td>$120.00</td>
+                                                <td><span class="status-badge bg-warning">In Progress</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX-7888</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="user-avatar me-2">
+                                                        <span>Emily Rodriguez</span>
+                                                    </div>
+                                                </td>
+                                                <td>Electrical Work</td>
+                                                <td>$210.00</td>
+                                                <td><span class="status-badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX-7887</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="user-avatar me-2">
+                                                        <span>David Wilson</span>
+                                                    </div>
+                                                </td>
+                                                <td>AC Installation</td>
+                                                <td>$450.00</td>
+                                                <td><span class="status-badge bg-danger">Cancelled</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#TRX-7886</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/women/12.jpg" class="user-avatar me-2">
+                                                        <span>Jennifer Lee</span>
+                                                    </div>
+                                                </td>
+                                                <td>Carpet Cleaning</td>
+                                                <td>$95.00</td>
+                                                <td><span class="status-badge bg-success">Completed</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-lg-4">
+                        <!-- Service Categories Chart -->
+                        <div class="card animate__animated animate__fadeInRight mb-4">
                             <div class="card-header">
                                 Service Categories Popularity
                             </div>
                             <div class="card-body">
-                                <canvas id="serviceCategoriesChart"></canvas>
+                                <div class="chart-container">
+                                    <canvas id="serviceCategoriesChart"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Recent Activity -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card animate__animated animate__fadeInUp">
+                        <!-- Recent Activity -->
+                        <div class="card animate__animated animate__fadeInRight mb-4">
                             <div class="card-header">
                                 Recent Activity
                             </div>
                             <div class="card-body">
-                                <table class="table table-hover" id="recent-activity-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Type</th>
-                                            <th>Description</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Data will be populated via JavaScript -->
-                                    </tbody>
-                                </table>
+                                <div class="recent-activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>New booking received</strong>
+                                        <small class="activity-time">2 mins ago</small>
+                                    </div>
+                                    <p class="mb-0 small">Home cleaning service booked by Sarah J.</p>
+                                </div>
+                                <div class="recent-activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Payment processed</strong>
+                                        <small class="activity-time">15 mins ago</small>
+                                    </div>
+                                    <p class="mb-0 small">$85.00 payment for booking #7890</p>
+                                </div>
+                                <div class="recent-activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>New provider registered</strong>
+                                        <small class="activity-time">1 hour ago</small>
+                                    </div>
+                                    <p class="mb-0 small">Mark T. registered as a plumber</p>
+                                </div>
+                                <div class="recent-activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Service completed</strong>
+                                        <small class="activity-time">3 hours ago</small>
+                                    </div>
+                                    <p class="mb-0 small">Electrical work by Alex completed</p>
+                                </div>
+                                <div class="recent-activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>New review received</strong>
+                                        <small class="activity-time">5 hours ago</small>
+                                    </div>
+                                    <p class="mb-0 small">5-star rating from customer #4532</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Providers -->
+                        <div class="card animate__animated animate__fadeInRight">
+                            <div class="card-header">
+                                Top Providers
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/men/41.jpg" class="user-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Robert Johnson</h6>
+                                        <small class="text-muted">Plumbing Services</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="text-warning">
+                                            <i class="fas fa-star"></i> 4.9
+                                        </div>
+                                        <small class="text-muted">28 bookings</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/women/63.jpg" class="user-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Maria Garcia</h6>
+                                        <small class="text-muted">Home Cleaning</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="text-warning">
+                                            <i class="fas fa-star"></i> 4.8
+                                        </div>
+                                        <small class="text-muted">35 bookings</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/22.jpg" class="user-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">James Wilson</h6>
+                                        <small class="text-muted">Electrical Services</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="text-warning">
+                                            <i class="fas fa-star"></i> 4.7
+                                        </div>
+                                        <small class="text-muted">19 bookings</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -181,6 +424,101 @@
             </main>
         </div>
     </div>
+
+    <script>
+        // Booking Trends Chart
+        const bookingCtx = document.getElementById('bookingTrendsChart').getContext('2d');
+        const bookingChart = new Chart(bookingCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Bookings',
+                    data: [120, 190, 170, 220, 260, 300, 350],
+                    backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                    borderColor: '#4361ee',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#4361ee',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#4361ee',
+                        cornerRadius: 4,
+                        padding: 12,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false,
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            stepSize: 100
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Service Categories Chart
+        const serviceCtx = document.getElementById('serviceCategoriesChart').getContext('2d');
+        const serviceChart = new Chart(serviceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cleaning', 'Plumbing', 'Electrical', 'Handyman', 'Moving', 'Other'],
+                datasets: [{
+                    data: [35, 25, 15, 10, 10, 5],
+                    backgroundColor: [
+                        '#4361ee',
+                        '#3f37c9',
+                        '#4895ef',
+                        '#4cc9f0',
+                        '#f8961e',
+                        '#7209b7'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -190,3 +528,5 @@
     <script src="../scripts/dashboard.js"></script>
 </body>
 </html>
+
+

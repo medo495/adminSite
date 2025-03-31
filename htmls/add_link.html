@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Link - ServiceLink</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <!-- Add flatpickr for date selection -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+    <style>
+        /* Empêcher le scroll */
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Centrage du formulaire */
+        .full-page-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            width: 500px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-label i {
+            margin-right: 8px;
+            color: #007bff;
+        }
+
+        .btn-custom {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="full-page-container">
+        <div class="form-container">
+            <h3 class="text-center mb-4 text-primary"><i class="fa-solid fa-link"></i> Add New Link</h3>
+
+            <form id="addLinkForm">
+                <div class="mb-3">
+                    <label for="provider" class="form-label">Provider ID</label>
+                    <input type="number" class="form-control" id="provider" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="request" class="form-label">Request ID</label>
+                    <input type="number" class="form-control" id="request" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status">
+                        <option value="pending">Pending</option>
+                        <option value="in progress">In Progress</option>
+                        <option value="finished">Finished</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Add Link</button>
+            </form>
+            
+           
+        </div>
+    </div>
+    <!-- Custom JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="../js/link.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

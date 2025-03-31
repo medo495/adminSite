@@ -1,271 +1,228 @@
-// Charger les bénéficiaires
-document.addEventListener("DOMContentLoaded", function () {
-    if (window.location.pathname.includes('beneficiaries.html')) {
-        fetchBeneficiaries();
-    }
-    // Ajouter les event listeners pour les formulaires
-    const addForm = document.getElementById("addBeneficiaryForm");
-    if (addForm) {
-        addForm.addEventListener("submit", handleAddBeneficiary);
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    const apiUrl = 'http://127.0.0.1:8000/users/';
+    let users = [];
 
-    const editForm = document.getElementById("editBeneficiaryForm");
-    if (editForm) {
-        editForm.addEventListener("submit", handleEditBeneficiary);
-    }
-});
+    // Fetch users with token authentication
+    // Modifiez la fonction fetchUsers pour mieux gérer les erreurs
+function fetchUsers() {
+    const accessToken = localStorage.getItem('access_token');
+    
+    console.log('Fetching users with token:', accessToken); // Debug
 
-function fetchBeneficiaries() {
-    const accessToken = localStorage.getItem('access_token'); // Récupérer le token d'accès
-
-    fetch("http://127.0.0.1:8000/beneficiaries/", {
+    fetch(apiUrl, {
         headers: {
-            "Authorization": `Bearer ${accessToken}` // Inclure le token d'accès
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
         }
     })
     .then(response => {
+        console.log('Response status:', response.status); // Debug
         if (response.status === 401) {
-            // Si le token est expiré, essayer de le rafraîchir
-            refreshToken();
+            return refreshToken().then(fetchUsers);
         } else if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des bénéficiaires.");
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
-        let tableBody = document.getElementById("beneficiariesTableBody");
-        if (!tableBody) {
-            console.error("Erreur: Élément #beneficiariesTableBody introuvable.");
+        console.log("API Response:", data);
+        users = Array.isArray(data) ? data : [data]; // S'assurer que c'est un array
+        renderUsers(users);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('Failed to load users: ' + error.message);
+    });
+}
+
+    // Render users to table
+    function renderUsers(data) {
+        const tableBody = document.getElementById('benificiariesTableBody');
+        
+        if (!data || data.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="7" class="text-center">No customers found</td></tr>`;
             return;
         }
-        tableBody.innerHTML = "";  // Nettoie le tableau avant de le remplir
-
-        data.forEach(beneficiary => {
-            let row = `<tr>
-                <td>${beneficiary.id}</td>
-                <td>${beneficiary.username}</td>
-                <td>${beneficiary.fullname}</td>
-                <td>${beneficiary.email}</td>
-                <td>${beneficiary.phone}</td>
-                <td>${beneficiary.address}</td>
-                <td><span class="badge ${beneficiary.is_vip ? 'bg-success' : 'bg-secondary'}">${beneficiary.is_vip ? 'VIP' : 'Standard'}</span></td>
-                <td><img src="${beneficiary.avatarUrl}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+    
+        tableBody.innerHTML = data.map(user => `
+            <tr>
+                <!-- Only showing your specified columns -->
+                <td>${user.id}</td>
+                <td>${user.username || 'N/A'}</td>
+                <td>${user.fullname || user.full_name || 'N/A'}</td>
+                <td>${user.email || 'N/A'}</td>
+                <td>${user.phone || 'N/A'}</td>
+                <td>${user.address || 'N/A'}</td>
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="editBeneficiary(${beneficiary.id})"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteBeneficiary(${beneficiary.id})"><i class="bi bi-trash"></i></button>
+                    <span class="badge ${user.is_vip ? 'bg-success' : 'bg-secondary'}">
+                        ${user.is_vip ? 'VIP' : 'Standard'}
+                    </span>
                 </td>
-            </tr>`;
-            tableBody.innerHTML += row;
-        });
-    })
-    .catch(error => console.error("Error fetching beneficiaries:", error));
-}
+                <!-- Keep actions column -->
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="viewUser(${user.id})">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
 
-// Ajouter un bénéficiaire
-function handleAddBeneficiary(event) {
-    event.preventDefault();
     
-    const accessToken = localStorage.getItem('access_token');
-    const formData = {
-        username: document.getElementById("beneficiaryUsername").value,
-        fullname: document.getElementById("beneficiaryFullname").value,
-        email: document.getElementById("beneficiaryEmail").value,
-        password: document.getElementById("beneficiaryPassword").value,
-        phone: document.getElementById("beneficiaryPhone").value,
-        address: document.getElementById("beneficiaryAddress").value,
-        is_vip: document.getElementById("beneficiaryIsVip").checked,
-        avatarUrl: document.getElementById("beneficiaryAvatarUrl").value
-    };
 
-    fetch("http://127.0.0.1:8000/beneficiaries/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => {
-        if (response.status === 401) {
-            refreshToken();
-            throw new Error("Token expiré");
-        }
-        if (!response.ok) {
-            throw new Error("Erreur lors de l'ajout du bénéficiaire");
-        }
-        return response.json();
-    })
-    .then(data => {
-        showAlert("Beneficiary added successfully!", "success");
-        setTimeout(() => {
-            window.location.href = "beneficiaries.html";
-        }, 2000);
-    })
-    .catch(error => {
-        showAlert("Error adding beneficiary: " + error.message, "danger");
-    });
-}
-
-// Modifier un bénéficiaire
-function editBeneficiary(id) {
-    const accessToken = localStorage.getItem('access_token');
-    
-    // Rediriger vers la page d'édition avec l'ID
-    window.location.href = `edit_beneficiary.html?id=${id}`;
-}
-
-// Fonction pour charger les données du bénéficiaire dans le formulaire d'édition
-function loadBeneficiaryData(id) {
-    console.log("Loading beneficiary data for ID:", id); // Debug log
-    const accessToken = localStorage.getItem('access_token');
-    
-    fetch(`http://127.0.0.1:8000/beneficiaries/?id=${id}`, {
-        headers: {
-            "Authorization": `Bearer ${accessToken}`
-        }
-    })
-    .then(response => {
-        if (response.status === 401) {
-            refreshToken();
-        }
-        return response.json();
-    })
-    .then(beneficiary => {
-        const beneficiaryData = beneficiary[0]; // Accéder au premier élément du tableau
-        // console.log("Beneficiary data received:", beneficiaryData); // Debug log
-        document.getElementById("beneficiaryUsername").value = beneficiaryData.username;
-        document.getElementById("beneficiaryFullname").value = beneficiaryData.fullname;
-        document.getElementById("beneficiaryEmail").value = beneficiaryData.email;
-        document.getElementById("beneficiaryPassword").value = beneficiaryData.password;
-        document.getElementById("beneficiaryPhone").value = beneficiaryData.phone;
-        document.getElementById("beneficiaryAddress").value = beneficiaryData.address || '';
-        document.getElementById("beneficiaryIsVip").checked = beneficiaryData.is_vip;
-        document.getElementById("beneficiaryAvatarUrl").value = beneficiaryData.avatarUrl;
-    })
-    .catch(error => console.error("Error loading beneficiary data:", error));
-}
-
-// Fonction pour gérer la soumission du formulaire de modification
-function handleEditBeneficiary(event) {
-    event.preventDefault();
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    const accessToken = localStorage.getItem('access_token');
-    
-    const formData = {
-        username: document.getElementById("beneficiaryUsername").value,
-        fullname: document.getElementById("beneficiaryFullname").value,
-        email: document.getElementById("beneficiaryEmail").value,
-        password: document.getElementById("beneficiaryPassword").value,
-        phone: document.getElementById("beneficiaryPhone").value,
-        address: document.getElementById("beneficiaryAddress").value,
-        is_vip: document.getElementById("beneficiaryIsVip").checked,
-        avatarUrl: document.getElementById("beneficiaryAvatarUrl").value
-    };
-
-    fetch(`http://127.0.0.1:8000/beneficiaries/?id=${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => {
-        if (response.status === 401) {
-            refreshToken();
-            throw new Error("Token expiré");
-        }
-        if (!response.ok) {
-            throw new Error("Erreur lors de la modification du bénéficiaire");
-        }
-        return response.json();
-    })
-    .then(data => {
-        showAlert("Beneficiary updated successfully!", "success");
-        setTimeout(() => {
-            window.location.href = "beneficiaries.html";
-        }, 2000);
-    })
-    .catch(error => {
-        showAlert("Error updating beneficiary: " + error.message, "danger");
-    });
-}
-
-// Supprimer un bénéficiaire
-function deleteBeneficiary(id) {
-    if (confirm("Are you sure you want to delete this beneficiary?")) {
-        const accessToken = localStorage.getItem('access_token'); // Récupérer le token d'accès
-
-        fetch(`http://127.0.0.1:8000/beneficiaries/?id=${id}`, {
-            method: "DELETE",
+    // View user details
+    window.viewUser = function(id) {
+        const accessToken = localStorage.getItem('access_token');
+        
+        fetch(`${apiUrl}${id}/`, {
             headers: {
-                "Authorization": `Bearer ${accessToken}` // Inclure le token d'accès
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
             }
         })
         .then(response => {
             if (response.status === 401) {
-                refreshToken(); // Rafraîchir le token si expiré
+                return refreshToken().then(() => viewUser(id));
             } else if (!response.ok) {
-                throw new Error("Erreur lors de la suppression du bénéficiaire.");
+                throw new Error('Failed to fetch user details');
             }
-            fetchBeneficiaries(); // Recharger la liste
+            return response.json();
         })
-        .catch(error => console.error("Error deleting beneficiary:", error));
-    }
-}
+        .then(user => {
+            Swal.fire({
+                title: 'User Details',
+                html: `
+                    <div class="text-start">
+                        <p><strong>ID:</strong> ${user.id}</p>
+                        <p><strong>Username:</strong> ${user.username}</p>
+                        <p><strong>Full Name:</strong> ${user.full_name || user.fullname || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Phone:</strong> ${user.phone || 'N/A'}</p>
+                        <p><strong>Address:</strong> ${user.address || 'N/A'}</p>
+                        <p><strong>Gender:</strong> ${user.gender || 'N/A'}</p>
+                        <p><strong>Status:</strong> <span class="badge ${user.is_active ? 'bg-success' : 'bg-danger'}">
+                            ${user.is_active ? 'Active' : 'Suspended'}
+                        </span></p>
+                        <p><strong>VIP Status:</strong> <span class="badge ${user.is_vip ? 'bg-success' : 'bg-secondary'}">
+                            ${user.is_vip ? 'VIP' : 'Standard'}
+                        </span></p>
+                    </div>
+                `,
+                confirmButtonText: 'OK'
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Failed to load user details');
+        });
+    };
 
-function refreshToken() {
-    const refreshToken = localStorage.getItem('refresh_token');
-
-    fetch("http://127.0.0.1:8000/token/refresh/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ refresh: refreshToken })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Failed to refresh token");
-        }
-        return response.json();
-    })
-    .then(data => {
-        localStorage.setItem('access_token', data.access_token);
-        console.log("Token rafraîchi avec succès.");
-        fetchBeneficiaries(); // Relancer la requête initiale
-    })
-    .catch(error => {
-        console.error("Erreur lors du rafraîchissement du token:", error);
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        window.location.href = "login.html"; // Rediriger vers la page de connexion
-    });
-}
-
-function showAlert(message, type) {
-    const alertDiv = document.getElementById('alertMessage');
-    if (alertDiv) {
-        alertDiv.className = `alert alert-${type}`;
-        alertDiv.textContent = message;
-        alertDiv.classList.remove('d-none');
+    // Toggle user active status
+    window.toggleUserStatus = function(id, isActive) {
+        const accessToken = localStorage.getItem('access_token');
         
-        // Masquer l'alerte après 3 secondes
-        setTimeout(() => {
-            alertDiv.classList.add('d-none');
-        }, 3000);
-    }
-}
+        Swal.fire({
+            title: 'Confirm Action',
+            text: `Are you sure you want to ${isActive ? 'suspend' : 'activate'} this user?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: `Yes, ${isActive ? 'suspend' : 'activate'}`,
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`${apiUrl}${id}/`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        is_active: !isActive
+                    })
+                })
+                .then(response => {
+                    if (response.status === 401) {
+                        return refreshToken().then(() => toggleUserStatus(id, isActive));
+                    } else if (!response.ok) {
+                        throw new Error('Failed to update user status');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    fetchUsers();
+                    Swal.fire(
+                        'Success!',
+                        `User has been ${isActive ? 'suspended' : 'activated'}.`,
+                        'success'
+                    );
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('Failed to update user status');
+                });
+            }
+        });
+    };
 
-// Ajouter un event listener pour charger les données du bénéficiaire lors de l'édition
-if (window.location.pathname.includes('edit_beneficiary.html')) {
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
-        if (id) {
-            loadBeneficiaryData(id);
-        }
+    // Search functionality
+    function searchUsers() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = users.filter(user => 
+            (user.username && user.username.toLowerCase().includes(query)) ||
+            ((user.full_name || user.fullname) && (user.full_name || user.fullname).toLowerCase().includes(query)) ||
+            (user.email && user.email.toLowerCase().includes(query)) ||
+            (user.phone && user.phone.toLowerCase().includes(query)) ||
+            (user.address && user.address.toLowerCase().includes(query))
+        );
+        renderUsers(filtered);
+    }
+
+    // Token refresh function
+    function refreshToken() {
+        const refreshToken = localStorage.getItem('refresh_token');
+
+        return fetch('http://127.0.0.1:8000/api/token/refresh/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ refresh: refreshToken })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Token refresh failed');
+            }
+            return response.json();
+        })
+        .then(data => {
+            localStorage.setItem('access_token', data.access);
+            return Promise.resolve();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/login.html';
+            return Promise.reject();
+        });
+    }
+
+    // Show error message
+    function showError(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+            confirmButtonText: 'OK'
+        });
+    }
+
+    // Event listeners
+    document.getElementById('searchButton').addEventListener('click', searchUsers);
+    document.getElementById('searchInput').addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') searchUsers();
     });
-}
+
+    // Initial fetch
+    fetchUsers();
+});
