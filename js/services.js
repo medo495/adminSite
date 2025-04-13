@@ -60,7 +60,7 @@ async function fetchServices() {
         }
 
         tableBody.innerHTML = services.map(service => {
-            const categoryName = categoryMap[service.category_id] || "No Category";
+            const categoryName = categoryMap[service.category] || "No Category";
             
             return `<tr>
                 <td>${service.service_id}</td>
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
 //-----------------------------------------------------------------------------------------------
 function setupSearch() {
     const searchInput = document.getElementById('searchServiceInput');
-    const searchButton = document.getElementById('searchServiceButton');
+    const searchButton = document.getElementById('searchButton');
     
     if (searchInput && searchButton) {
         // Search when button is clicked

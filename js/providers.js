@@ -58,7 +58,7 @@ function fetchProviders() {
                 <td>${provider.gender}</td>
                 <td>${provider.phone}</td>
                 <td>${provider.address}</td>
-                <td>${provider.services}</td>
+                <td>${provider.service}</td>
                 <td><span class="badge ${provider.is_disponible ? 'bg-success' : 'bg-danger'}">${provider.is_disponible ? 'Available' : 'Unavailable'}</span></td>
                 <td>${provider.rating_avg} ⭐</td>
                 <td>

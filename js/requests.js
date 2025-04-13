@@ -45,18 +45,15 @@ function fetchRequests(retry = true) {
     });
 }
 
+// Modify the populateRequestsTable function to include the consultation button
 async function populateRequestsTable(requests) {
     const tableBody = document.getElementById('requestsTableBody');
     tableBody.innerHTML = ''; // Clear existing rows
 
     for (const request of requests) {
-        // Fetch user details if not already included
         const user = typeof request.user === 'object' ? request.user : await fetchUserDetails(request.user);
-        
-        // Fetch service details if not already included
         const service = typeof request.service === 'object' ? request.service : await fetchServiceDetails(request.service);
         
-        // Create the row with the fetched data
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${request.request_id || 'N/A'}</td>
@@ -64,24 +61,26 @@ async function populateRequestsTable(requests) {
             <td>${service.service_name || `Service ${service.id}`}</td>
             <td>${formatDatesForDisplay(request.selected_dates)}</td>
             <td>${formatStatus(request.request_status)}</td>
-              <td>
-            <div class="d-flex">
-                <!-- Approve Button - Only show if status is pending -->
-                ${request.request_status === 'Pending' ? `
-                <button class="btn btn-sm btn-success me-1" onclick="approveRequest(${request.request_id})">
-                    <i class="fas fa-check"></i> Approve
-                </button>
-                ` : ''}
-                
-                <!-- Keep other buttons -->
-                <button class="btn btn-sm btn-warning me-1" onclick="editRequest(${request.request_id})">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteRequest(${request.request_id})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        </td>
+            <td>
+                <div class="d-flex">
+                    <!-- Consultation Button -->
+                    <button class="btn btn-sm btn-info me-1" onclick="showRequestDetails(${request.request_id})">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                    
+                    <!-- Approve Button - Only show if status is pending -->
+                    ${request.request_status === 'Pending' ? `
+                    <button class="btn btn-sm btn-success me-1" onclick="approveRequest(${request.request_id})">
+                        <i class="fas fa-check"></i> Approve
+                    </button>
+                    ` : ''}
+                    
+                    <!-- Reject Button -->
+                    <button class="btn btn-sm btn-danger" onclick="deleteRequest(${request.request_id})">
+                        <i class="fas fa-trash"></i> Reject
+                    </button>
+                </div>
+            </td>
         `;
         tableBody.appendChild(row);
     }
@@ -488,4 +487,228 @@ function refreshToken() {
             localStorage.setItem('refresh_token', data.refresh);
         }
     });
+}
+
+
+// Add this to your existing code
+
+// Function to show request details in modal
+async function showRequestDetails(requestId) {
+    try {
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        // Show loading state
+        const modal = new bootstrap.Modal(document.getElementById('requestDetailsModal'));
+        modal.show();
+        document.getElementById('modalRequestId').value = 'Loading...';
+        
+        // Fetch request details
+        const response = await fetch(`http://127.0.0.1:8000/requests/${requestId}/?expand=user,service`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        // Handle 401 Unauthorized
+        if (response.status === 401) {
+            try {
+                await refreshToken();
+                return showRequestDetails(requestId); // Retry with new token
+            } catch (refreshError) {
+                throw new Error('Session expired. Please login again.');
+            }
+        }
+
+        // Handle other error statuses
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+
+        const request = await response.json();
+        
+        // Validate response data
+        if (!request || typeof request !== 'object') {
+            throw new Error('Invalid request data received from server');
+        }
+
+        // Populate modal fields
+        document.getElementById('modalRequestId').value = request.request_id || 'N/A';
+        document.getElementById('modalRequestStatus').value = request.request_status || 'N/A';
+        document.getElementById('modalCustomer').value = request.user?.username || `User ${request.user}`;
+        document.getElementById('modalService').value = request.service?.service_name || `Service ${request.service}`;
+        document.getElementById('modalRequirements').value = request.special_requirements || 'None';
+        
+        // Format dates for display
+        const datesContainer = document.getElementById('modalSelectedDates');
+        datesContainer.innerHTML = formatDatesForDisplay(request.selected_dates);
+        
+        // Only show provider assignment if status is pending
+        const providerSection = document.getElementById('providerAssignmentSection');
+        const saveBtn = document.getElementById('saveProviderBtn');
+        
+        if (request.request_status === 'Pending') {
+            providerSection.style.display = 'block';
+            saveBtn.style.display = 'block';
+            await fetchAvailableProviders(request.service, request.selected_dates);
+        } else {
+            providerSection.style.display = 'none';
+            saveBtn.style.display = 'none';
+        }
+        
+        // Store current request ID for the save operation
+        saveBtn.onclick = () => assignProvider(requestId);
+
+    } catch (error) {
+        console.error("Error in showRequestDetails:", error);
+        
+        // Update modal to show error state
+        document.getElementById('modalRequestId').value = 'Error';
+        document.getElementById('modalRequestStatus').value = 'N/A';
+        document.getElementById('modalCustomer').value = 'Failed to load';
+        document.getElementById('modalService').value = 'Failed to load';
+        document.getElementById('modalRequirements').value = 'Failed to load details';
+        document.getElementById('modalSelectedDates').innerHTML = 
+            `<div class="alert alert-danger">${error.message}</div>`;
+        
+        // Hide provider assignment section
+        document.getElementById('providerAssignmentSection').style.display = 'none';
+        document.getElementById('saveProviderBtn').style.display = 'none';
+        
+        // Ensure modal is still shown even with errors
+        const modal = new bootstrap.Modal(document.getElementById('requestDetailsModal'));
+        modal.show();
+    }
+}
+
+// Function to fetch available providers for a service and dates
+function fetchAvailableProviders(serviceId, selectedDates) {
+    const accessToken = localStorage.getItem('access_token');
+    const selectElement = document.getElementById('providerSelect');
+    
+    // Clear existing options except the first one
+    selectElement.innerHTML = '<option value="">Select a provider</option>';
+    
+    // First get the service category
+    fetch(`http://127.0.0.1:8000/services/${serviceId}/`, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    })
+    .then(response => {
+        if (response.status === 401) {
+            return refreshToken().then(() => fetchAvailableProviders(serviceId, selectedDates));
+        }
+        if (!response.ok) {
+            throw new Error("Failed to fetch service details");
+        }
+        return response.json();
+    })
+    .then(service => {
+        // Now fetch providers for this category
+        return fetch(`http://127.0.0.1:8000/providers/?category=${service.category}`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to fetch providers");
+        }
+        return response.json();
+    })
+    .then(providers => {
+        // Populate the select dropdown
+        providers.forEach(provider => {
+            const option = document.createElement('option');
+            option.value = provider.id;
+            option.textContent = provider.username || `Provider ${provider.id}`;
+            selectElement.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error("Error fetching providers:", error);
+        showAlert(`Failed to load providers: ${error.message}`, "danger");
+    });
+}
+
+// Function to assign a provider to a request
+function assignProvider(requestId) {
+    const providerId = document.getElementById('providerSelect').value;
+    if (!providerId) {
+        showAlert("Please select a provider", "warning");
+        return;
+    }
+    
+    const accessToken = localStorage.getItem('access_token');
+    
+    fetch(`http://127.0.0.1:8000/requests/${requestId}/assign/`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            provider_id: providerId
+        })
+    })
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            const error = new Error(data.message || 'Assignment failed');
+            error.status = response.status;
+            throw error;
+        }
+        return data;
+    })
+    .then(data => {
+        showAlert(data.message || 'Provider assigned successfully!', 'success');
+        fetchRequests(); // Refresh the list
+        
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('requestDetailsModal'));
+        modal.hide();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert(error.message || 'Failed to assign provider', 'danger');
+    });
+}
+
+// Update your deleteRequest function to handle rejection
+function deleteRequest(requestId) {
+    if (confirm("Are you sure you want to reject and delete this request?")) {
+        const accessToken = localStorage.getItem('access_token');
+        
+        fetch(`http://127.0.0.1:8000/requests/${requestId}/reject/`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(async (response) => {
+            const data = await response.json();
+            
+            if (response.status === 401) {
+                await refreshToken();
+                throw new Error("Token expired - Please try again");
+            }
+            if (!response.ok) {
+                throw new Error(data.message || "Rejection failed");
+            }
+            
+            showAlert("Request rejected and removed successfully", "success");
+            fetchRequests(); // Refresh the table
+        })
+        .catch(error => {
+            console.error("Full rejection error:", error);
+            showAlert(`Rejection failed: ${error.message}`, "danger");
+        });
+    }
 }

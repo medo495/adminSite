@@ -658,15 +658,24 @@ h2 {
 }
 
 /* Form Elements */
+
+.form-select, 
+.form-control {
+        padding: 8px 12px;
+    }
+.form-select, 
 .form-control {
     border: 1px solid #ffd6c8; /* Light orange border */
-    background-color: #fff5f2; /* Very light orange background */
+    background-color: #fff9f7; /* Very light orange background */
+    padding: 10px 15px;
+    border-radius: 8px;
     transition: all 0.3s ease;
 }
 
+.form-select:focus, 
 .form-control:focus {
     border-color: #ff6b35;
-    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25); /* Orange focus glow */
+    box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.25); /* Orange focus glow */
     background-color: white;
 }
 
@@ -850,6 +859,7 @@ h2 {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+
 .form-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(255, 107, 53, 0.2); /* Stronger orange shadow on hover */
@@ -879,21 +889,6 @@ h2 {
     color: #ff6b35; /* Orange color for icons */
 }
 
-.form-select, 
-.form-control {
-    border: 1px solid #ffd6c8; /* Light orange border */
-    background-color: #fff9f7; /* Very light orange background */
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.form-select:focus, 
-.form-control:focus {
-    border-color: #ff6b35;
-    box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.25); /* Orange focus glow */
-    background-color: white;
-}
 
 /* Date Time Picker */
 .flatpickr-input {
@@ -962,10 +957,7 @@ h2 {
         padding: 20px;
     }
     
-    .form-select, 
-    .form-control {
-        padding: 8px 12px;
-    }
+    
     
     .btn-custom {
         padding: 10px;

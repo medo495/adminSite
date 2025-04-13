@@ -90,13 +90,27 @@
     box-shadow: 0 4px 6px rgba(255, 79, 0, 0.2);
     letter-spacing: 0.5px;
   }
+  button:focus, button:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
   
   .btn-primary:hover {
     background-color: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(255, 79, 0, 0.3);
   }
-  
+  .btn-primary:focus, 
+.btn-primary:active, 
+.btn-primary:focus:active, 
+.btn-primary:active:focus, 
+.show > .btn-primary.dropdown-toggle {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  outline: none !important;
+}
+
   .remember-forget {
     display: flex;
     justify-content: space-between;
@@ -123,14 +137,7 @@
     color: var(--primary-color);
     text-decoration: underline;
   }
-  
-  .footer {
-    text-align: center;
-    padding: 1rem;
-    color: var(--dark-color);
-    background-color: rgba(255, 255, 255, 0.9);
-    margin-top: auto;
-  }
+ 
   
   /* Animations */
   @keyframes fadeIn {
@@ -172,7 +179,6 @@
       padding: 10px;
     }
   }
-  /* Add these to your existing login.css */
 
 /* Forgot Password Specific Styles */
 .card p.text-muted {
